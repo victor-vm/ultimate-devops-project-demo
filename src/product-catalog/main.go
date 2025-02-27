@@ -319,7 +319,7 @@ func createClient(ctx context.Context, svcAddr string) (*grpc.ClientConn, error)
 
 
 
-//new repository
+//ok now we can build the docker image
 
 
 
