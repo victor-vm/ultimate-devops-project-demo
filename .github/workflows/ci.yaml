@@ -90,16 +90,19 @@ jobs:
         - name: checkout code
           uses: actions/checkout@v4
           with:
-            token: ${{ secrets.GITHUB_TOKEN }}
+            token: ${{ secrets.GH_PAT }}
 
         - name: Update tag in kubernetes deployment manifest
           run: | 
                sed -i "s|image: .*|image: ${{ secrets.DOCKER_USER }}/product-catalog:${{github.run_id}}|" kubernetes/productcatalog/deploy.yaml
         
         - name: Commit and push changes
+          env:
+            GH_PAT: ${{ secrets.GH_PAT }}
           run: |
             git config --global user.email "victor.vbtn.gmail.com"
-            git config --global user.name "victor14"
+            git config --global user.name "victor-vm"
+            git remote set-url origin https://victor-vm:${GH_PAT}@github.com/victor-vm/ultimate-devops-project-demo.git
             git add kubernetes/productcatalog/deploy.yaml
             git commit -m "[CI]: Update product catalog image tag"
             git push origin HEAD:main -f
